@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Verification</title>
+</head>
+<body>
+
+<h2>Request Verification Badge ✅</h2>
+<a href="index.html">Home</a>
+
+<p>Cost: R20 (manual approval system)</p>
+
+<input id="name" placeholder="Your username">
+<input id="proof" placeholder="Payment proof (screenshot link)">
+
+<button onclick="request()">Request Verification</button>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+firebase.initializeApp({
+  apiKey: "YOUR_KEY",
+  authDomain: "educhat-c05b4.firebaseapp.com",
+  databaseURL: "https://educhat-c05b4-default-rtdb.firebaseio.com"
+});
+
+const db = firebase.database();
+
+function request(){
+  db.ref("verificationRequests").push({
+    name: name.value,
+    proof: proof.value,
+    status: "pending"
+  });
+
+  alert("Request sent!");
+}
+</script>
+
+</body>
+</html>

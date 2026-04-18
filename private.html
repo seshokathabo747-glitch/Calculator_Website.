@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Private Chat</title>
+  <style>
+    body { font-family: Arial; padding: 10px; }
+    input, button { width: 100%; padding: 10px; margin-top: 5px; }
+    #chat { border:1px solid #ccc; height:60vh; overflow:auto; padding:10px; }
+  </style>
+</head>
+<body>
+
+<h2>Private Chat 🔒</h2>
+<a href="index.html">Home</a>
+
+<input id="me" placeholder="Your name">
+<input id="to" placeholder="Send to">
+<input id="msg" placeholder="Message">
+<button onclick="send()">Send</button>
+
+<div id="chat"></div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+firebase.initializeApp({
+  apiKey: "YOUR_KEY",
+  authDomain: "educhat-c05b4.firebaseapp.com",
+  databaseURL: "https://educhat-c05b4-default-rtdb.firebaseio.com"
+});
+
+const db = firebase.database();
+
+function send(){
+  let room = me.value + "_" + to.value;
+
+  db.ref("private/" + room).push({
+    from: me.value,
+    text: msg.value,
+    time: new Date().toLocaleTimeString()
+  });
+
+  msg.value="";
+}
+
+db.ref("private").on("child_added", snap=>{
+  snap.forEach(m=>{
+    const v=m.val();
+    chat.innerHTML += `<div><b>${v.from}</b>: ${v.text}</div>`;
+  });
+});
+</script>
+
+</body>
+</html>

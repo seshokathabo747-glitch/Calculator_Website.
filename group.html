@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Group Chat</title>
+  <style>
+    body { font-family: Arial; padding: 10px; }
+    #chat { height: 70vh; overflow-y: auto; border: 1px solid #ccc; padding: 10px; }
+    input, button { width: 100%; padding: 10px; margin-top: 5px; }
+    .msg { background:#eee; padding:8px; margin:5px; border-radius:6px; }
+  </style>
+</head>
+<body>
+
+<h2>Group Chat 💬</h2>
+<a href="index.html">Home</a>
+
+<input id="name" placeholder="Name">
+<input id="msg" placeholder="Message">
+<button onclick="send()">Send</button>
+
+<div id="chat"></div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+firebase.initializeApp({
+  apiKey: "YOUR_KEY",
+  authDomain: "educhat-c05b4.firebaseapp.com",
+  databaseURL: "https://educhat-c05b4-default-rtdb.firebaseio.com"
+});
+
+const db = firebase.database();
+
+function send(){
+  db.ref("group").push({
+    name: name.value,
+    text: msg.value,
+    time: new Date().toLocaleTimeString()
+  });
+  msg.value="";
+}
+
+db.ref("group").on("child_added", s=>{
+  const m=s.val();
+  chat.innerHTML += `<div class='msg'><b>${m.name}</b>: ${m.text}</div>`;
+});
+</script>
+
+</body>
+</html>

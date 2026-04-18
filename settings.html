@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Settings</title>
+</head>
+<body>
+
+<h2>Settings ⚙️</h2>
+<a href="index.html">Home</a>
+
+<p>Username (stored locally)</p>
+
+<input id="name" placeholder="Set name">
+<button onclick="save()">Save</button>
+
+<script>
+function save(){
+  localStorage.setItem("name", name.value);
+  alert("Saved!");
+}
+</script>
+
+</body>
+</html>
